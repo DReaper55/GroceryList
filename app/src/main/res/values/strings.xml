@@ -6,4 +6,5 @@
     <string name="grocery_item">Enter grocery</string>
     <string name="grocery_quantity">Quantity</string>
     <string name="grocery_save">Save</string>
+    <string name="title_activity_list">ListActivity</string>
 </resources>
