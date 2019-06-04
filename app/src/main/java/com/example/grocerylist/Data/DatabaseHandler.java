@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.grocerylist.Model.Grocery;
 import com.example.grocerylist.Util.Util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -47,6 +49,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(Util.KEY_DATE_ADDED, grocery.getDateItemAdded());
 
         db.insert(Util.TABLE_NAME, null, values);
+
+        Log.d("Saved", "Item saved");
     }
 
     // Get one grocery item
@@ -62,8 +66,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         assert cursor != null;
-        Grocery grocery = new Grocery(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
-                cursor.getString(2), cursor.getString(3));
+        Grocery grocery = new Grocery();
+        grocery.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(Util.KEY_ID))));
+        grocery.setName(cursor.getString(cursor.getColumnIndex(Util.KEY_GROCERY_NAME)));
+        grocery.setQuantity(cursor.getString(cursor.getColumnIndex(Util.KEY_GROCERY_QTY)));
+
+        // converting the time to a date format
+        java.text.DateFormat dateFormat= java.text.DateFormat.getDateInstance();
+        String initialDate = dateFormat.format(new Date(cursor.getLong(cursor.getColumnIndex(Util.KEY_DATE_ADDED)))
+        .getTime());
+
+        grocery.setDateItemAdded(initialDate);
 
         cursor.close();
         return grocery;
@@ -75,15 +88,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         List<Grocery> groceries = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Util.TABLE_NAME, null);
+        Cursor cursor = db.query(Util.TABLE_NAME, new String[]{
+                Util.KEY_ID, Util.KEY_GROCERY_NAME, Util.KEY_GROCERY_QTY, Util.KEY_DATE_ADDED
+        }, null, null, null, null, Util.KEY_GROCERY_NAME + " DESC");
 
         if(cursor.moveToFirst()){
             do{
                 Grocery grocery = new Grocery();
-                grocery.setId(Integer.parseInt(cursor.getString(0)));
-                grocery.setName(cursor.getString(1));
-                grocery.setQuantity(cursor.getString(2));
-                grocery.setDateItemAdded(cursor.getString(3));
+                grocery.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(Util.KEY_ID))));
+                grocery.setName(cursor.getString(cursor.getColumnIndex(Util.KEY_GROCERY_NAME)));
+                grocery.setQuantity(cursor.getString(cursor.getColumnIndex(Util.KEY_GROCERY_NAME)));
+
+                java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
+                String initialDate = dateFormat.format(new Date(cursor.getLong(cursor.getColumnIndex(Util.KEY_DATE_ADDED)))
+                .getTime());
+
+                grocery.setDateItemAdded(initialDate);
+
 
                 groceries.add(grocery);
             }while(cursor.moveToNext());
@@ -100,23 +121,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Util.KEY_GROCERY_NAME, grocery.getName());
         values.put(Util.KEY_GROCERY_QTY, grocery.getQuantity());
-        values.put(Util.KEY_DATE_ADDED, grocery.getDateItemAdded());
+        values.put(Util.KEY_DATE_ADDED, java.lang.System.currentTimeMillis()); // to get the system time
 
         return db.update(Util.TABLE_NAME, values, Util.KEY_ID + "=?",
                 new String[]{String.valueOf(grocery.getId())});
     }
 
     // Delete grocery item
-    public void deleteGrocery(Grocery grocery){
-        SQLiteDatabase db = getWritableDatabase();
+    public void deleteGrocery(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(Util.TABLE_NAME, Util.KEY_ID + "=?",
-                new String[]{String.valueOf(grocery.getId())});
+                new String[]{String.valueOf(id)});
+
+        db.close();
     }
 
     // Get grocery count
-    public int totatGrocery(){
-        SQLiteDatabase db = getReadableDatabase();
+    public int totalGrocery(){
+        SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM " + Util.TABLE_NAME, null);
 
