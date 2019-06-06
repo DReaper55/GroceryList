@@ -25,8 +25,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE = "CREATE TABLE " + Util.TABLE_NAME + "("
-                + Util.KEY_ID + " INTEGER PRIMARY KEY," + Util.KEY_GROCERY_NAME + "TEXT "
-                + Util.KEY_GROCERY_QTY + "TEXT, " + Util.KEY_DATE_ADDED + "LONG);" ;
+                + Util.KEY_ID + " INTEGER PRIMARY KEY," + Util.KEY_GROCERY_NAME + " TEXT,"
+                + Util.KEY_GROCERY_QTY + " TEXT," + Util.KEY_DATE_ADDED + " LONG);" ;
 
         db.execSQL(CREATE_TABLE);
     }
@@ -46,7 +46,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(Util.KEY_GROCERY_NAME, grocery.getName());
         values.put(Util.KEY_GROCERY_QTY, grocery.getQuantity());
-        values.put(Util.KEY_DATE_ADDED, grocery.getDateItemAdded());
+        values.put(Util.KEY_DATE_ADDED, java.lang.System.currentTimeMillis());
 
         db.insert(Util.TABLE_NAME, null, values);
 
@@ -90,14 +90,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(Util.TABLE_NAME, new String[]{
                 Util.KEY_ID, Util.KEY_GROCERY_NAME, Util.KEY_GROCERY_QTY, Util.KEY_DATE_ADDED
-        }, null, null, null, null, Util.KEY_GROCERY_NAME + " DESC");
+        }, null, null, null, null, Util.KEY_DATE_ADDED + " DESC");
 
         if(cursor.moveToFirst()){
             do{
                 Grocery grocery = new Grocery();
                 grocery.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(Util.KEY_ID))));
                 grocery.setName(cursor.getString(cursor.getColumnIndex(Util.KEY_GROCERY_NAME)));
-                grocery.setQuantity(cursor.getString(cursor.getColumnIndex(Util.KEY_GROCERY_NAME)));
+                grocery.setQuantity(cursor.getString(cursor.getColumnIndex(Util.KEY_GROCERY_QTY)));
 
                 java.text.DateFormat dateFormat = java.text.DateFormat.getDateInstance();
                 String initialDate = dateFormat.format(new Date(cursor.getLong(cursor.getColumnIndex(Util.KEY_DATE_ADDED)))

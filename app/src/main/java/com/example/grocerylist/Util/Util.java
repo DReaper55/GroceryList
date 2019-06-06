@@ -3,7 +3,7 @@ package com.example.grocerylist.Util;
 public class Util {
 
     public static final int DB_VERSION = 1;
-    public static final String DB_NAME = "grocery.db";
+    public static final String DB_NAME = "grocery1.db";
     public static final String TABLE_NAME = "grocery";
 
     public static final String KEY_ID = "id";

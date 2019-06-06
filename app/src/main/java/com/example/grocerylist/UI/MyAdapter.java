@@ -1,6 +1,7 @@
 package com.example.grocerylist.UI;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,30 +10,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.grocerylist.Activities.DetailsActivity;
 import com.example.grocerylist.Model.Grocery;
 import com.example.grocerylist.R;
 
 import java.util.List;
 
-public class myAdapter extends RecyclerView.Adapter<myAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
     private List<Grocery> groceries;
 
-    public myAdapter(Context context, List<Grocery> groceries) {
+    public MyAdapter(Context context, List<Grocery> groceries) {
         this.context = context;
         this.groceries = groceries;
     }
 
     @NonNull
     @Override
-    public myAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public MyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_row, viewGroup, false);
 
         return new ViewHolder(view, context);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull myAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull MyAdapter.ViewHolder viewHolder, int i) {
         Grocery grocery = groceries.get(i);
 
         viewHolder.groceryName.setText(grocery.getName());
@@ -70,6 +72,18 @@ public class myAdapter extends RecyclerView.Adapter<myAdapter.ViewHolder> {
            view.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
+
+                   int position = getAdapterPosition();
+
+                   Grocery grocery = groceries.get(position);
+                   Intent intent = new Intent(context, DetailsActivity.class);
+
+                   intent.putExtra("id", grocery.getId());
+                   intent.putExtra("name", grocery.getName());
+                   intent.putExtra("quantity", grocery.getQuantity());
+                   intent.putExtra("date", grocery.getDateItemAdded());
+
+                   context.startActivity(intent);
 
                }
            });

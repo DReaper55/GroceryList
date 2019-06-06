@@ -30,6 +30,7 @@ android:layout_marginStart="10dp"    android:layout_marginEnd="10dp">
                 android:layout_below="@id/groceryText"
                 android:layout_marginTop="15dp"
                 android:hint="@string/grocery_item"
+                android:inputType="textShortMessage"
                 android:textSize="24sp" />
 
             <EditText
@@ -39,6 +40,7 @@ android:layout_marginStart="10dp"    android:layout_marginEnd="10dp">
                 android:layout_below="@id/groceryItem"
                 android:layout_marginTop="15dp"
                 android:hint="@string/grocery_quantity"
+                android:inputType="number"
                 android:textSize="24sp" />
 
             <Button
