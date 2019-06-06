@@ -49,14 +49,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView groceryName;
-        public TextView quantity;
-        public TextView dateAdded;
-        public Button editItem;
-        public Button deleteItem;
+        private TextView groceryName;
+        private TextView quantity;
+        private TextView dateAdded;
+        private Button editItem;
+        private Button deleteItem;
         public int id;
 
-        public ViewHolder(@NonNull View view, Context ctext) {
+        private ViewHolder(@NonNull View view, Context ctext) {
             super(view);
             context = ctext;
 
