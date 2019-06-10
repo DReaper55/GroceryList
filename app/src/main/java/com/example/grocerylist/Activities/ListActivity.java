@@ -41,6 +41,7 @@ public class ListActivity extends AppCompatActivity {
 
         setUpRecycler();
 
+
     }
 
     private void setUpRecycler(){

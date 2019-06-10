@@ -3,7 +3,6 @@ package com.example.grocerylist.UI;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -165,7 +164,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             int pos = getAdapterPosition();
 
             grocery.setName(enterItem.getText().toString());
-            grocery.setQuantity(enterQty.getText().toString());
+            grocery.setQuantity("Qty: " + enterQty.getText().toString());
 
             db.updateGrocery(grocery);
 
