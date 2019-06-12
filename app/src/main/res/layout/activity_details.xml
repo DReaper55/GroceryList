@@ -20,6 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
+            android:id="@+id/relateID"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp">
@@ -28,8 +29,8 @@
                 android:id="@+id/groceryNameID2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Groceryname"
                 android:layout_centerHorizontal="true"
+                android:text="Groceryname"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -54,5 +55,24 @@
                 android:textStyle="italic" />
 
         </RelativeLayout>
+
+
     </android.support.v7.widget.CardView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/shareID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cardView2"
+        app:layout_constraintVertical_bias="0.276"
+        app:srcCompat="@drawable/ic_share_black_24dp" />
+
 </android.support.constraint.ConstraintLayout>
